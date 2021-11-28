@@ -17,6 +17,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/info/info.module').then((m) => m.InfoPageModule),
   },
+  {
+    path: 'info',
+    loadChildren: () =>
+      import('./pages/info/info.module').then((m) => m.InfoPageModule),
+  },
 ];
 
 @NgModule({

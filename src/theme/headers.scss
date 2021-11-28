@@ -5,3 +5,11 @@
     --padding-end: 1rem;
   }
 }
+
+.hbz-header-secondary {
+  @extend .hbz-header-primary;
+
+  & ion-toolbar {
+    --padding-start: 0;
+  }
+}
