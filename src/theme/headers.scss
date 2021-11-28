@@ -1,0 +1,7 @@
+.hbz-header-primary {
+  & ion-toolbar {
+    --background: var(--hbz-color-primary);
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+  }
+}
