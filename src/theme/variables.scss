@@ -3,7 +3,18 @@
 
 /** Ionic CSS Variables **/
 :root {
+  /** Hard Braking Zones **/
+  --hbz-color-primary: #ff9900;
+  --hbz-color-secondary: #c57600;
+  --hbz-background-color-primary: #fff;
 
+  /** Texts **/
+  --hbz-text-color-primary: #000;
+
+  /** Buttons **/
+  --hbz-button-background-color-primary: #fff;
+  --hbz-button-background-ripple-color-primary: #808080;
+  --hbz-button-shadow-primary: 0px 5px 10px rgba(0, 0, 0, 0.25);
 
   /** primary **/
   --ion-color-primary: #3880ff;

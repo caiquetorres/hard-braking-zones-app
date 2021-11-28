@@ -24,3 +24,30 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+@import './theme/headers.scss';
+@import './theme/pages.scss';
+@import './theme/buttons.scss';
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: 'Roboto';
+  font-weight: normal;
+}
