@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -13,7 +12,7 @@ registerLocaleData(localePt);
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [AppRoutingModule, IonicModule.forRoot()],
+  imports: [BrowserModule, AppRoutingModule, IonicModule.forRoot()],
   providers: [
     {
       provide: RouteReuseStrategy,
