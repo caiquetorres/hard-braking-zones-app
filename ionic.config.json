@@ -1,0 +1,8 @@
+{
+  "name": "Hard Braking Zones",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

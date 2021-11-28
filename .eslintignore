@@ -1,0 +1,4 @@
+.eslintrc
+karma.config.js
+/e2e/protractor.conf.js
+patch-camera.js
