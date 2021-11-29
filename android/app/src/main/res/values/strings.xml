@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hard Braking Zones</string>
+    <string name="title_activity_main">Hard Braking Zones</string>
+    <string name="package_name">com.facens.hardbrakingzones</string>
+    <string name="custom_url_scheme">com.facens.hardbrakingzones</string>
+</resources>
