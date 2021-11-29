@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  baseUrl: '',
+  baseUrl: 'https://hard-braking-zones-backend-dev.herokuapp.com',
+  mocked: true,
+  routes: {
+    info: '/infos',
+  },
 };
 
 /*
