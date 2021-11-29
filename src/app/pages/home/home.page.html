@@ -8,29 +8,9 @@
 </ion-header>
 
 <ion-content class="hbz-page-primary">
-  <ion-grid>
-    <ion-col>
-      <ion-row> </ion-row>
-      <ion-row>
-        <ion-button class="hbz-button-primary">
-          <ion-icon
-            slot="start"
-            name="settings-sharp"
-            class="ion-margin-end"
-          ></ion-icon>
-          <ion-text>Configurações</ion-text>
-        </ion-button>
-      </ion-row>
-      <ion-row>
-        <ion-button class="hbz-button-primary" (click)="goToInfo()">
-          <ion-icon
-            slot="start"
-            name="information-circle-sharp"
-            class="ion-margin-end"
-          ></ion-icon>
-          <ion-text>Informações</ion-text>
-        </ion-button>
-      </ion-row>
-    </ion-col>
-  </ion-grid>
+  <ion-title class="ion-margin-bottom">Sobre o App</ion-title>
+  <ion-row *ngIf="loading" class="ion-justify-content-center">
+    <ion-spinner class="hbz-spinner-primary"></ion-spinner>
+  </ion-row>
+  <ion-text *ngIf="info">{{ info.text }}</ion-text>
 </ion-content>
