@@ -28,7 +28,6 @@
     "@capacitor/android": "^3.0.1",
     "@capacitor/browser": "^1.0.2",
     "@capacitor/core": "^3.0.1",
-    "@capacitor/keyboard": "^1.0.1",
     "@capacitor/local-notifications": "^1.0.1",
     "@capacitor/network": "^1.0.2",
     "@capacitor/push-notifications": "^1.0.2",

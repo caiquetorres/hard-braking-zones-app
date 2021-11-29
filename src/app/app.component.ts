@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { HelperService } from './services/helper/helper.service';
 import { StatusBarService } from './services/status-bar/status-bar.service';
 
 /**
@@ -17,12 +18,24 @@ import { StatusBarService } from './services/status-bar/status-bar.service';
 export class AppComponent implements OnInit {
   constructor(
     private readonly storage: Storage,
+    private readonly helperService: HelperService,
     private readonly statusBarService: StatusBarService,
   ) {}
 
   async ngOnInit() {
+    this.setupScreenOrientation();
     await this.setupStorage();
-    await this.statusBarService.setColor('var(--hbz-color-primary)');
+    await this.statusBarService.setColor('#c57600');
+  }
+
+  /**
+   * Method that setups the application screen orientation.
+   */
+  private setupScreenOrientation() {
+    if (!this.helperService.mobile) {
+      return;
+    }
+    window.screen.orientation.lock('portrait');
   }
 
   /**
