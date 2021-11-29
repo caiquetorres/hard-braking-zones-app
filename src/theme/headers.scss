@@ -3,6 +3,10 @@
     --background: var(--hbz-color-primary);
     --padding-start: 1rem;
     --padding-end: 1rem;
+
+    & * {
+      color: var(--hbz-text-color-secondary);
+    }
   }
 }
 

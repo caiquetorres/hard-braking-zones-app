@@ -28,6 +28,7 @@
 @import './theme/headers.scss';
 @import './theme/pages.scss';
 @import './theme/buttons.scss';
+@import './theme/spinners.scss';
 
 @font-face {
   font-family: 'Roboto';
@@ -50,4 +51,5 @@
 
   font-family: 'Roboto';
   font-weight: normal;
+  color: var(--hbz-text-color-primary);
 }
