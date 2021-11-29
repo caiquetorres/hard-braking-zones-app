@@ -1,0 +1,10 @@
+.hbz-input-primary {
+  --background: var(--hbz-background-color-primary);
+  --highlight-color-focused: var(--hbz-color-primary);
+
+  &.item-has-focus {
+    & ion-label {
+      color: var(--hbz-color-primary) !important;
+    }
+  }
+}

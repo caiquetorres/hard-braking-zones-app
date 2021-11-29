@@ -20,6 +20,16 @@ export class MenuComponent {
    */
   async goToHome() {
     await this.menuController.close();
-    return this.navController.navigateRoot('/home');
+    await this.navController.navigateRoot('/home', {
+      animationDirection: 'back',
+    });
+  }
+
+  /**
+   * Method that redirects the user to the feedback page.
+   */
+  async goToFeedback() {
+    await this.menuController.close();
+    await this.navController.navigateForward('/feedback');
   }
 }
