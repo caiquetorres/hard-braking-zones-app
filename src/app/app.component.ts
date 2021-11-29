@@ -11,7 +11,8 @@ import { StatusBarService } from './services/status-bar/status-bar.service';
   selector: 'hbz-root',
   template: `
     <ion-app>
-      <ion-router-outlet></ion-router-outlet>
+      <ion-router-outlet id="main"></ion-router-outlet>
+      <hbz-menu></hbz-menu>
     </ion-app>
   `,
 })

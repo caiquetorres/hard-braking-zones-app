@@ -1,0 +1,16 @@
+:host > ion-menu > ion-content {
+  --background: var(--hbz-background-color-primary);
+
+  & ion-list {
+    background: var(--hbz-background-color-primary);
+
+    & ion-item {
+      --background: var(--hbz-background-color-primary);
+
+      & ion-icon {
+        margin-right: 1rem;
+        color: var(--hbz-color-primary);
+      }
+    }
+  }
+}

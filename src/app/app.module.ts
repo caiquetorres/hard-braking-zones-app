@@ -8,6 +8,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
+import { MenuModule } from './components/menu/menu.module';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BaseUrlInterceptor } from './interceptors/base-url/base-url.interceptor';
@@ -20,6 +22,7 @@ registerLocaleData(localePt);
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MenuModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot({
       dbKey: '__dadb',
