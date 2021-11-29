@@ -6,8 +6,8 @@ import { InfoPage } from './info.page';
 const routes: Routes = [
   {
     path: '',
-    component: InfoPage
-  }
+    component: InfoPage,
+  },
 ];
 
 @NgModule({
