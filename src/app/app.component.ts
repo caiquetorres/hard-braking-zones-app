@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { StatusBarService } from './services/status-bar/status-bar.service';
+
 /**
  * Component that represents the application.
  */
@@ -13,10 +15,14 @@ import { Storage } from '@ionic/storage';
   `,
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly storage: Storage) {}
+  constructor(
+    private readonly storage: Storage,
+    private readonly statusBarService: StatusBarService,
+  ) {}
 
   async ngOnInit() {
     await this.setupStorage();
+    await this.statusBarService.setColor('var(--hbz-color-primary)');
   }
 
   /**
