@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { FeedbackPageRoutingModule } from './feedback-routing.module';
-
 import { FeedbackPage } from './feedback.page';
 
 @NgModule({
@@ -13,8 +11,9 @@ import { FeedbackPage } from './feedback.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    FeedbackPageRoutingModule
+    ReactiveFormsModule,
+    FeedbackPageRoutingModule,
   ],
-  declarations: [FeedbackPage]
+  declarations: [FeedbackPage],
 })
 export class FeedbackPageModule {}
