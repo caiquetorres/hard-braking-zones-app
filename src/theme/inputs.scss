@@ -1,6 +1,8 @@
 .hbz-input-primary {
   --background: var(--hbz-background-color-primary);
   --highlight-color-focused: var(--hbz-color-primary);
+  --highlight-color-valid: var(--hbz-color-primary);
+  --highlight-color-invalid: var(--hbz-color-primary);
 
   &.item-has-focus {
     & ion-label {
