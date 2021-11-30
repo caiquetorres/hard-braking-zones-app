@@ -1,0 +1,11 @@
+@import './spinners.scss';
+
+.hbz-loading-primary {
+  & .loading-wrapper {
+    background-color: var(--hbz-background-color-primary);
+
+    & ion-spinner {
+      @extend .hbz-spinner-primary;
+    }
+  }
+}

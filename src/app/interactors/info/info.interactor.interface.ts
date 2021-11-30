@@ -1,7 +1,7 @@
 import { IInfo } from '../../models/proxies/info.interface';
 
 /**
- * Interface that represents the object that represents the interactor.
+ * Interface that represents the object that interacts with the backend.
  */
 export interface IInfoInteractor {
   /**

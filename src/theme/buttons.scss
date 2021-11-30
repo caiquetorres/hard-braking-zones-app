@@ -1,20 +1,5 @@
 .hbz-button-primary {
-  width: 100%;
-
-  --padding-start: 0;
-  --padding-end: 0;
-
-  font-size: 1rem;
-
   --background: var(--hbz-button-background-color-primary);
   --box-shadow: var(--hbz-button-shadow-primary);
-  --ripple-color: var(--hbz-button-background-ripple-color-primary);
-
-  & ion-icon {
-    color: var(--hbz-color-primary);
-  }
-
-  & ion-text {
-    color: var(--hbz-text-color-primary);
-  }
+  color: var(--hbz-text-color-secondary);
 }

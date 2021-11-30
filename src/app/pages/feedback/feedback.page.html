@@ -1,0 +1,29 @@
+<ion-header class="hbz-header-primary">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Feedback</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="hbz-page-primary">
+  <form [formGroup]="formGroup" (ngSubmit)="send()">
+    <ion-item class="hbz-input-primary">
+      <ion-label position="stacked">Nos envie um feedback</ion-label>
+      <ion-textarea
+        rows="10"
+        placeholder="Achei o app muito bom, porém..."
+        formControlName="text"
+      ></ion-textarea>
+    </ion-item>
+    <ion-button
+      class="ion-margin-top hbz-button-primary"
+      expand="full"
+      type="submit"
+      [disabled]="!formGroup.valid"
+    >
+      Enviar
+    </ion-button>
+  </form>
+</ion-content>

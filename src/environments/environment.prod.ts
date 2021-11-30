@@ -4,5 +4,6 @@ export const environment = {
   mocked: false,
   routes: {
     info: '/infos',
+    feedback: '/feedback'
   },
 };

@@ -25,7 +25,7 @@ export class InfoMockup implements IInfoInteractor {
   /**
    * Property that defines some useful examples.
    */
-  infos: IInfo[] = [
+  readonly infos: IInfo[] = [
     {
       id: '1',
       createdAt: new Date(),
