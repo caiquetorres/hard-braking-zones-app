@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.setupScreenOrientation();
     await this.setupStorage();
-    await this.statusBarService.setColor('#');
+    await this.statusBarService.setColor('#c57600');
   }
 
   /**
