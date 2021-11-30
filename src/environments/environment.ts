@@ -8,6 +8,7 @@ export const environment = {
   mocked: true,
   routes: {
     info: '/infos',
+    feedback: '/feedback'
   },
 };
 
