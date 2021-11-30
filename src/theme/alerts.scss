@@ -1,0 +1,9 @@
+.hbz-alert-primary {
+  & .alert-wrapper {
+    background-color: var(--hbz-background-color-primary);
+
+    & h2 {
+      color: var(--hbz-text-color-primary);
+    }
+  }
+}
