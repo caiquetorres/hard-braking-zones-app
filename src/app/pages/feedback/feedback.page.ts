@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { AlertService } from '../../services/alert/alert.service';
 import { FeedbackService } from '../../services/feedback/feedback.service';
 import { LoadingService } from '../../services/loading/loading.service';
 
@@ -21,7 +22,8 @@ export class FeedbackPage {
 
   constructor(
     formBuilder: FormBuilder,
-    private readonly loadingProvider: LoadingService,
+    private readonly loadingService: LoadingService,
+    private readonly alertService: AlertService,
     private readonly feedbackService: FeedbackService,
   ) {
     this.formGroup = formBuilder.group({
@@ -33,8 +35,13 @@ export class FeedbackPage {
    * Method that sends to the backend the new feedback entity.
    */
   async send() {
-    await this.loadingProvider.present({ message: 'Enviando feedback...' });
+    await this.loadingService.present({ message: 'Enviando feedback...' });
     await this.feedbackService.createOne(this.formGroup.getRawValue());
-    await this.loadingProvider.dismiss();
+    await this.loadingService.dismiss();
+    await this.alertService.present({
+      header: 'Sucesso!',
+      message: 'Obrigado por nos enviar o feedback',
+      buttons: ['Ok'],
+    });
   }
 }
