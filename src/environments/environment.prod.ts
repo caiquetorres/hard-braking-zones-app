@@ -1,9 +1,12 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://hard-braking-zones-backend-dev.herokuapp.com',
+  baseUrl: 'https://hard-braking-zones-backend-dev.herokuapp.com/v1',
   mocked: false,
+  keys: {
+    settings: 'UC-SETTINGS',
+  },
   routes: {
-    info: '/infos',
-    feedback: '/feedback'
+    info: '/info',
+    feedback: '/feedback',
   },
 };
