@@ -9,5 +9,5 @@ export interface IInfoInteractor {
    *
    * @returns an object that represents the default entity.
    */
-  getDefault(): Promise<IInfo>;
+  getOne(): Promise<IInfo>;
 }

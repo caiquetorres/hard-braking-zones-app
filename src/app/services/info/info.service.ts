@@ -17,6 +17,6 @@ export class InfoService {
    * @returns an object that represents the default entity.
    */
   async getDefault() {
-    return this.infoInteractor.getDefault();
+    return this.infoInteractor.getOne();
   }
 }
