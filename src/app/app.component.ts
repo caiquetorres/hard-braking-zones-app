@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { HelperService } from './services/helper/helper.service';
+import { SettingsService } from './services/settings/settings.service';
 import { StatusBarService } from './services/status-bar/status-bar.service';
 
 /**
@@ -20,13 +21,15 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly storage: Storage,
     private readonly helperService: HelperService,
+    private readonly settingsService: SettingsService,
     private readonly statusBarService: StatusBarService,
   ) {}
 
   async ngOnInit() {
-    this.setupScreenOrientation();
     await this.setupStorage();
     await this.statusBarService.setColor('#c57600');
+    this.setupScreenOrientation();
+    this.settingsService.setup();
   }
 
   /**

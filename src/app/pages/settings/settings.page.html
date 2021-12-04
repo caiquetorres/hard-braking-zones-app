@@ -14,7 +14,11 @@
     </ion-list-header>
     <ion-item>
       <ion-label>Rastreio do celular</ion-label>
-      <ion-checkbox slot="start" checked></ion-checkbox>
+      <ion-checkbox
+        slot="start"
+        [(ngModel)]="settings.gps"
+        (ionChange)="save()"
+      ></ion-checkbox>
     </ion-item>
   </ion-list>
 </ion-content>
