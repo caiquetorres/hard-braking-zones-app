@@ -40,7 +40,7 @@ export class InfoMockup implements IInfoInteractor {
    *
    * @returns an object that represents the default entity.
    */
-  async getDefault() {
+  async getOne() {
     await wait(1000);
     return this.infos[0];
   }

@@ -26,6 +26,14 @@ export class MenuComponent {
   }
 
   /**
+   * Method that redirects the user to the settings page.
+   */
+  async goToSettings() {
+    await this.menuController.close();
+    await this.navController.navigateForward('/settings');
+  }
+
+  /**
    * Method that redirects the user to the feedback page.
    */
   async goToFeedback() {

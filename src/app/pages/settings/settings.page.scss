@@ -1,0 +1,19 @@
+:host {
+  & ion-list {
+    background: var(--hbz-background-color-primary);
+
+    & ion-item {
+      --background: var(--hbz-background-color-primary);
+      --padding-start: 0;
+
+      & ion-checkbox {
+        margin-right: 1rem;
+
+        --background-checked: var(--hbz-color-primary);
+        --border-color-checked: var(--hbz-color-primary);
+        --background: transparent;
+        --border-color: var(--hbz-color-primary);
+      }
+    }
+  }
+}

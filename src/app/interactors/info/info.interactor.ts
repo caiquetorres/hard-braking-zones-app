@@ -26,12 +26,10 @@ export class InfoInteractor implements IInfoInteractor {
    *
    * @returns an object that represents the default entity.
    */
-  async getDefault() {
+  async getOne() {
     if (environment.mocked) {
-      return this.infoMockup.getDefault();
+      return this.infoMockup.getOne();
     }
-    return this.httpClient
-      .get<IInfo>(`${environment.routes.info}/default`)
-      .toPromise();
+    return this.httpClient.get<IInfo>(environment.routes.info).toPromise();
   }
 }
