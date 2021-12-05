@@ -12,5 +12,7 @@
   <ion-row *ngIf="loading" class="ion-justify-content-center">
     <ion-spinner class="hbz-spinner-primary"></ion-spinner>
   </ion-row>
-  <ion-text *ngIf="info">{{ info.text }}</ion-text>
+  <ion-text *ngIf="!loading" class="ion-text-justify">
+    <p>{{ info.text }}</p>
+  </ion-text>
 </ion-content>
