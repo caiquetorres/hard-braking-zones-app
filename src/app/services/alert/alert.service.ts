@@ -20,7 +20,11 @@ export class AlertService {
    *
    * @param options defines an object that contains the alert properties
    */
-  async present(options?: AlertOptions) {
+  async present(
+    options?: Omit<AlertOptions, 'cssClass'> & {
+      cssClass?: 'hbz-alert-primary';
+    },
+  ) {
     options.cssClass ??= 'hbz-alert-primary';
     this.alert = await this.alertController.create(options);
     await this.alert.present();

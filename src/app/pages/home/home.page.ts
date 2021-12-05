@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { IInfo } from '../../models/proxies/info.interface';
 
+import { AlertService } from '../../services/alert/alert.service';
 import { InfoService } from '../../services/info/info.service';
+import { VersionService } from '../../services/version/version.service';
+
+import { environment } from '../../../environments/environment';
 
 /**
  * Component that represents the application home page.
@@ -24,11 +28,36 @@ export class HomePage implements OnInit {
    */
   info: IInfo;
 
-  constructor(private readonly infoService: InfoService) {}
+  constructor(
+    private readonly versionService: VersionService,
+    private readonly infoService: InfoService,
+    private readonly alertService: AlertService,
+  ) {}
 
   async ngOnInit() {
     this.loading = true;
+
     this.info = await this.fetchInfo();
+    const {
+      value: { version },
+    } = await this.versionService.getOne();
+
+    if (version !== environment.version) {
+      await this.alertService.present({
+        header: 'Nova versão',
+        message: `Uma nova versão do app foi encontrada, deseja baixa-la?`,
+        buttons: [
+          'Cancelar',
+          {
+            text: 'Fazer download',
+            handler: async () => {
+              console.log('dowload');
+            },
+          },
+        ],
+      });
+    }
+
     this.loading = false;
   }
 
