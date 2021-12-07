@@ -25,8 +25,9 @@ export class VersionInteractor implements IVersionInteractor {
     return await this.httpClient
       .get<IVersion>(environment.routes.version)
       .toPromise()
-      .then<IVersion>(
-        (r) => (r.value = JSON.parse(r.value as unknown as string)),
-      );
+      .then<IVersion>((res) => {
+        res.value = JSON.parse(res.value as unknown as string);
+        return res;
+      });
   }
 }

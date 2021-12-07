@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'https://hard-braking-zones-backend-dev.herokuapp.com/v1',
-  mocked: true,
+  mocked: false,
   version: '1.0.0',
   keys: {
     settings: 'UC-SETTINGS',

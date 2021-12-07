@@ -28,6 +28,8 @@ export class HomePage implements OnInit {
    */
   info: IInfo;
 
+  speed = 0;
+
   constructor(
     private readonly versionService: VersionService,
     private readonly infoService: InfoService,
