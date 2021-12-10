@@ -33,7 +33,7 @@
     "@capacitor/push-notifications": "^1.0.2",
     "@capacitor/splash-screen": "^1.0.1",
     "@capacitor/status-bar": "^1.0.1",
-    "@hard-braking-zones/location": "file:../hard-braking-zones-location-plugin",
+    "@hard-braking-zones/location": "git+https://github.com/caiquetorres/hard-braking-zones-location-plugin.git",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.4",
     "@ionic/storage-angular": "^3.0.6",
