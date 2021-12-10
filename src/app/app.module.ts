@@ -10,9 +10,13 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { MenuModule } from './components/menu/menu.module';
 
+import { environment } from '../environments/environment';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BaseUrlInterceptor } from './interceptors/base-url/base-url.interceptor';
+
+import { SocketIoModule } from 'ngx-socket-io';
 
 registerLocaleData(localePt);
 
@@ -24,6 +28,9 @@ registerLocaleData(localePt);
     HttpClientModule,
     MenuModule,
     IonicModule.forRoot(),
+    SocketIoModule.forRoot({
+      url: environment.baseUrl.replace('/v1', ''),
+    }),
     IonicStorageModule.forRoot({
       dbKey: '__dadb',
       driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
