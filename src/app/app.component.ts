@@ -3,6 +3,7 @@ import { Storage } from '@ionic/storage';
 
 import { HelperService } from './services/helper/helper.service';
 import { SettingsService } from './services/settings/settings.service';
+import { SqliteService } from './services/sqlite/sqlite.service';
 import { StatusBarService } from './services/status-bar/status-bar.service';
 
 /**
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
     private readonly storage: Storage,
     private readonly helperService: HelperService,
     private readonly settingsService: SettingsService,
+    private readonly sqliteService: SqliteService,
     private readonly statusBarService: StatusBarService,
   ) {}
 
@@ -47,5 +49,6 @@ export class AppComponent implements OnInit {
    */
   private async setupStorage() {
     await this.storage.create();
+    await this.sqliteService.create();
   }
 }

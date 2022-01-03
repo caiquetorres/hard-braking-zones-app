@@ -13,7 +13,7 @@ export class NetworkService {
    * Property that defines an object that informs if the application is
    * connected with the internet.
    */
-  public readonly connected$ = new BehaviorSubject<boolean>(void 0);
+  readonly connected$ = new BehaviorSubject<boolean>(void 0);
 
   constructor() {
     Network.addListener('networkStatusChange', (status) => {
