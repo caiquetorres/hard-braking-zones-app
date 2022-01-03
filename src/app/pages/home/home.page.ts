@@ -31,8 +31,6 @@ export class HomePage implements OnInit {
    */
   info: IInfo;
 
-  speed = 0;
-
   constructor(
     private readonly socket: Socket,
     private readonly locationService: LocationService,
@@ -46,33 +44,34 @@ export class HomePage implements OnInit {
 
     this.socket.on('connect', () => {
       setInterval(async () => {
-        const speed = await this.locationService.getLocation();
-        console.log(speed);
+        await this.locationService.save();
       }, 1000);
     });
 
     this.info = await this.fetchInfo();
-    const {
-      value: { version },
-    } = await this.versionService.getOne();
+    const version = await this.fetchVersion();
 
-    if (version !== environment.version) {
-      await this.alertService.present({
-        header: 'Nova versão',
-        message: `Uma nova versão do app foi encontrada, deseja baixa-la?`,
-        buttons: [
-          'Cancelar',
-          {
-            text: 'Fazer download',
-            handler: async () => {
-              console.log('dowload');
-            },
-          },
-        ],
-      });
+    if (version.value.version !== environment.version) {
+      await this.showAlert();
     }
 
     this.loading = false;
+  }
+
+  private async showAlert() {
+    await this.alertService.present({
+      header: 'Nova versão',
+      message: `Uma nova versão do app foi encontrada, deseja baixa-la?`,
+      buttons: [
+        'Cancelar',
+        {
+          text: 'Fazer download',
+          handler: async () => {
+            console.log('dowload');
+          },
+        },
+      ],
+    });
   }
 
   /**
@@ -80,7 +79,11 @@ export class HomePage implements OnInit {
    *
    * @returns an object that represents the found entity.
    */
-  private async fetchInfo() {
+  private fetchInfo() {
     return this.infoService.getDefault();
+  }
+
+  private fetchVersion() {
+    return this.versionService.getOne();
   }
 }
