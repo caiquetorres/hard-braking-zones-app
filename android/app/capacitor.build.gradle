@@ -16,7 +16,7 @@ dependencies {
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
     implementation project(':hard-braking-zones-location')
-
+    implementation "net.zetetic:android-database-sqlcipher:4.3.0"
 }
 
 
