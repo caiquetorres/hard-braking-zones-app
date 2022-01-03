@@ -14,7 +14,7 @@ export const environment = {
     info: '/info',
     feedback: '/feedback',
     version: '/version',
-    upload: '/upload',
+    upload: '/locations/upload',
   },
 };
 
