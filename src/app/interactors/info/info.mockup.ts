@@ -11,7 +11,15 @@ import { environment } from '../../../environments/environment';
 import { IInfoInteractor } from './info.interactor.interface';
 
 /**
- * Mockup that simulates the interaction with the backend.
+ * Class that represents the interactor's mockup that handles the mocked
+ * `info` data, allowing to work in the application in test mode.
+ *
+ * @see {@link IInfoInteractor}.
+ *
+ * @usageNotes This class cannot be passed as a dependency to a
+ * `component` or `service`, it can only be passed to an `interactor`,
+ * because when the application changes the mocked state from `false`
+ * to `true` this class will not be instantiated.
  */
 @Injectable({
   providedIn: 'root',
@@ -23,7 +31,7 @@ import { IInfoInteractor } from './info.interactor.interface';
 })
 export class InfoMockup implements IInfoInteractor {
   /**
-   * Property that defines some useful examples.
+   * Property that defines an array with some useful examples.
    */
   readonly infos: IInfo[] = [
     {
@@ -37,9 +45,7 @@ export class InfoMockup implements IInfoInteractor {
   ];
 
   /**
-   * Method that returns the default entity.
-   *
-   * @returns an object that represents the default entity.
+   * @inheritDoc
    */
   async getOne() {
     await wait(1000);

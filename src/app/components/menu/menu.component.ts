@@ -16,7 +16,7 @@ export class MenuComponent {
   ) {}
 
   /**
-   * Method that redirects the user to the home page.
+   * Method that redirects the user to the `home` page.
    */
   async goToHome() {
     await this.menuController.close();
@@ -26,7 +26,7 @@ export class MenuComponent {
   }
 
   /**
-   * Method that redirects the user to the settings page.
+   * Method that redirects the user to the `settings` page.
    */
   async goToSettings() {
     await this.menuController.close();
@@ -34,7 +34,7 @@ export class MenuComponent {
   }
 
   /**
-   * Method that redirects the user to the feedback page.
+   * Method that redirects the user to the `feedback` page.
    */
   async goToFeedback() {
     await this.menuController.close();

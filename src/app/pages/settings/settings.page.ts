@@ -7,6 +7,11 @@ import { SettingsService } from '../../services/settings/settings.service';
 
 /**
  * Component that represents the application settings page.
+ *
+ * @example
+ * ```html
+ * <hbz-settings></hbz-settings>
+ * ```
  */
 @Component({
   selector: 'hbz-settings',
@@ -21,6 +26,10 @@ export class SettingsPage {
   @ViewChild(IonCheckbox)
   checkbox: IonCheckbox;
 
+  /**
+   * Property that defines an object that represents the data that will
+   * be rendered.
+   */
   settings: ISettings;
 
   constructor(private readonly settingsService: SettingsService) {
@@ -29,6 +38,9 @@ export class SettingsPage {
       .subscribe((settings) => (this.settings = settings ?? {}));
   }
 
+  /**
+   * Method that saves the current `settings`.
+   */
   async save() {
     this.settingsService.set(this.settings);
   }

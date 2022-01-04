@@ -10,7 +10,15 @@ import { environment } from '../../../environments/environment';
 import { IFeedbackInteractor } from './feedback.interactor.interface';
 
 /**
- * Mockup that simulates the interaction with the backend.
+ * Class that represents the interactor's mockup that handles the mocked
+ * `feedback` data, allowing to work in the application in test mode.
+ *
+ * @see {@link IFeedbackInteractor}.
+ *
+ * @usageNotes This class cannot be passed as a dependency to a
+ * `component` or `service`, it can only be passed to an `interactor`,
+ * because when the application changes the mocked state from `false`
+ * to `true` this class will not be instantiated.
  */
 @Injectable({
   providedIn: 'root',
@@ -21,13 +29,13 @@ import { IFeedbackInteractor } from './feedback.interactor.interface';
   },
 })
 export class FeedbackMockup implements IFeedbackInteractor {
+  /**
+   * Property that defines an array with some useful examples.
+   */
   private readonly feedbacks: IFeedback[] = [];
 
   /**
-   * Method that creates a new entity.
-   *
-   * @param body an object that contains the new entity data.
-   * @returns an object that represents the created entity.
+   * @inheritDoc
    */
   async createOne(body: ICreateFeedback) {
     const feedback: IFeedback = {

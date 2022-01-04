@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
     await this.setupStorage();
     await this.statusBarService.setColor('#c57600');
     this.setupScreenOrientation();
-    this.settingsService.setup();
+    this.settingsService.init();
   }
 
   /**

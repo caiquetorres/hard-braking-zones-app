@@ -2,21 +2,22 @@ import { Injectable } from '@angular/core';
 import { AlertController, AlertOptions } from '@ionic/angular';
 
 /**
- * Service that controls the main application alert.
+ * Service that controls the main application `alert`.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
   /**
-   * Property that defines an object that represents the alert.
+   * Property that defines an object that represents the `alert` html
+   * element.
    */
   alert: HTMLIonAlertElement;
 
   constructor(private readonly alertController: AlertController) {}
 
   /**
-   * Method that opens the loading alert.
+   * Method that opens the loading `alert`.
    *
    * @param options defines an object that contains the alert properties
    */

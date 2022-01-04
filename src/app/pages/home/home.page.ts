@@ -13,6 +13,11 @@ import { Socket } from 'ngx-socket-io';
 
 /**
  * Component that represents the application home page.
+ *
+ * @example
+ * ```html
+ * <hbz-home></hbz-home>
+ * ```
  */
 @Component({
   selector: 'hbz-home',
@@ -58,6 +63,9 @@ export class HomePage implements OnInit {
     this.loading = false;
   }
 
+  /**
+   * Method that shows the application `alert`.
+   */
   private async showAlert() {
     await this.alertService.present({
       header: 'Nova versão',
@@ -83,6 +91,11 @@ export class HomePage implements OnInit {
     return this.infoService.getDefault();
   }
 
+  /**
+   * Method that gets from the backend the default entity value.
+   *
+   * @returns an object that represents the found entity.
+   */
   private fetchVersion() {
     return this.versionService.getOne();
   }

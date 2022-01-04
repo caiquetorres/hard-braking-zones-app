@@ -4,12 +4,15 @@ import { SQLite, SQLiteObject } from '@ionic-enterprise/secure-storage/ngx';
 import { HelperService } from '../helper/helper.service';
 
 /**
- * Service that is responsible for dealing with all the
+ * Service that is responsible for dealing with all the offline data.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class SqliteService {
+  /**
+   * Property that defines an object that represents the `sqlite` database.
+   */
   database: SQLiteObject;
 
   constructor(
@@ -17,6 +20,9 @@ export class SqliteService {
     private readonly helperService: HelperService,
   ) {}
 
+  /**
+   * Method that initializes the `sqlite` database.
+   */
   async create() {
     if (!this.helperService.mobile) {
       return;

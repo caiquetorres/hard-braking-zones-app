@@ -23,6 +23,9 @@ export class NetworkService {
     });
   }
 
+  /**
+   * Method that initializes the `connected$` property.
+   */
   async init() {
     const connected = (await Network.getStatus()).connected;
     this.connected$.next(connected);

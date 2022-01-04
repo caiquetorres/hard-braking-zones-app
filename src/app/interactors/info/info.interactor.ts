@@ -9,7 +9,14 @@ import { IInfoInteractor } from './info.interactor.interface';
 import { InfoMockup } from './info.mockup';
 
 /**
- * Interactor that allows interacting with the backend.
+ * Interactor that consumes the backed project when dealing with
+ * `info` entities.
+ *
+ * @see {@link IInfoInteractor}.
+ *
+ * @usageNotes This class cannot be passed as a dependency to a component
+ * directly, you must create a service, pass it as a dependency to the
+ * service and pass the service as a dependency to a component.
  */
 @Injectable({
   providedIn: 'root',
@@ -22,9 +29,7 @@ export class InfoInteractor implements IInfoInteractor {
   ) {}
 
   /**
-   * Method that returns the default entity.
-   *
-   * @returns an object that represents the default entity.
+   * @inheritDoc
    */
   async getOne() {
     if (environment.mocked) {

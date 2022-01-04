@@ -8,6 +8,16 @@ import { environment } from '../../../environments/environment';
 import { IVersionInteractor } from './version.interactor.interface';
 import { VersionMockup } from './version.mockup';
 
+/**
+ * Interactor that consumes the backed project when dealing with
+ * `version` entities.
+ *
+ * @see {@link IVersionInteractor}.
+ *
+ * @usageNotes This class cannot be passed as a dependency to a component
+ * directly, you must create a service, pass it as a dependency to the
+ * service and pass the service as a dependency to a component.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +28,9 @@ export class VersionInteractor implements IVersionInteractor {
     private readonly httpClient: HttpClient,
   ) {}
 
+  /**
+   * @inheritDoc
+   */
   async getOne() {
     if (environment.mocked) {
       return this.versionMockup.getOne();

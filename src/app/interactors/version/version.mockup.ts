@@ -8,6 +8,17 @@ import { environment } from '../../../environments/environment';
 
 import { IVersionInteractor } from './version.interactor.interface';
 
+/**
+ * Class that represents the interactor's mockup that handles the mocked
+ * `version` data, allowing to work in the application in test mode.
+ *
+ * @see {@link IVersionInteractor}.
+ *
+ * @usageNotes This class cannot be passed as a dependency to a
+ * `component` or `service`, it can only be passed to an `interactor`,
+ * because when the application changes the mocked state from `false`
+ * to `true` this class will not be instantiated.
+ */
 @Injectable({
   providedIn: 'root',
   useFactory: () => {
@@ -17,7 +28,10 @@ import { IVersionInteractor } from './version.interactor.interface';
   },
 })
 export class VersionMockup implements IVersionInteractor {
-  version: IVersion = {
+  /**
+   * Property that defines an array with some useful examples.
+   */
+  readonly version: IVersion = {
     id: '1',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -28,6 +42,9 @@ export class VersionMockup implements IVersionInteractor {
     },
   };
 
+  /**
+   * @inheritDoc
+   */
   async getOne() {
     await wait(200);
     return this.version;

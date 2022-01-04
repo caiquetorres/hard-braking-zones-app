@@ -10,7 +10,14 @@ import { IFeedbackInteractor } from './feedback.interactor.interface';
 import { FeedbackMockup } from './feedback.mockup';
 
 /**
- * Interactor that allows interacting with the backend.
+ * Interactor that consumes the backed project when dealing with
+ * `feedback` entities.
+ *
+ * @see {@link IFeedbackInteractor}.
+ *
+ * @usageNotes This class cannot be passed as a dependency to a component
+ * directly, you must create a service, pass it as a dependency to the
+ * service and pass the service as a dependency to a component.
  */
 @Injectable({
   providedIn: 'root',
@@ -23,10 +30,7 @@ export class FeedbackInteractor implements IFeedbackInteractor {
   ) {}
 
   /**
-   * Method that creates a new entity.
-   *
-   * @param body an object that contains the new entity data.
-   * @returns an object that represents the created entity.
+   * @inheritDoc
    */
   async createOne(body: ICreateFeedback) {
     if (environment.mocked) {

@@ -7,6 +7,11 @@ import { LoadingService } from '../../services/loading/loading.service';
 
 /**
  * Component that represents the application feedback page.
+ *
+ * @example
+ * ```html
+ * <hbz-feedback></hbz-feedback>
+ * ```
  */
 @Component({
   selector: 'hbz-feedback',
