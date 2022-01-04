@@ -41,10 +41,13 @@ export class LocationService {
 
     const location = await Location.getLocation();
 
-    // if (this.networkService.connected$.value) {
-    //   this.emitToSocket(location);
-    //   return;
-    // }
+    location.speed = +location.speed.toFixed(4);
+    location.accuracy = +location.accuracy.toFixed(4);
+
+    if (this.networkService.connected$.value) {
+      this.emitToSocket(location);
+      return;
+    }
 
     await this.saveInLocalDatabase(location);
   }
@@ -55,7 +58,7 @@ export class LocationService {
    * @param location defines an object that contains the `location` data.
    */
   private emitToSocket(location: ILocation) {
-    this.socket.emit('speed', location);
+    this.socket.emit('location', location);
   }
 
   /**
@@ -84,13 +87,16 @@ export class LocationService {
     if (!this.sqliteService.database) {
       return;
     }
+    try {
+      const locations = await this.getAllLocationsFromLocalDatabase();
+      const file = this.createFileFromString(JSON.stringify(locations));
 
-    const locations = await this.getAllLocationsFromLocalDatabase();
-    const file = this.createFileFromString(JSON.stringify(locations));
-
-    await this.uploadService.uploadFile(file);
-
-    await this.clearDatabase();
+      await this.uploadService.uploadFile(file);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      await this.clearDatabase();
+    }
   }
 
   private async getAllLocationsFromLocalDatabase() {
