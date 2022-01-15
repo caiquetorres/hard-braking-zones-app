@@ -6,7 +6,6 @@ import { SqliteService } from '../sqlite/sqlite.service';
 import { UploadService } from '../upload/upload.service';
 
 import { ILocation, Location } from '@hard-braking-zones/location';
-import { Socket } from 'ngx-socket-io';
 
 /**
  * Service that deals with all the logic related with `location`.
@@ -16,17 +15,26 @@ import { Socket } from 'ngx-socket-io';
 })
 export class LocationService {
   constructor(
-    private readonly socket: Socket,
     private readonly helperService: HelperService,
     private readonly networkService: NetworkService,
     private readonly sqliteService: SqliteService,
     private readonly uploadService: UploadService,
   ) {
-    networkService.connected$.subscribe(async (connected) => {
+    networkService.connected$.subscribe((connected) => {
       if (connected) {
         this.sync();
       }
     });
+  }
+
+  init() {
+    setInterval(async () => {
+      await this.save();
+    }, 1000);
+
+    setInterval(async () => {
+      await this.sync();
+    }, 1000 * 100);
   }
 
   /**
@@ -34,7 +42,7 @@ export class LocationService {
    * de sql database or, if connected with internet, into de Influx
    * database.
    */
-  async save() {
+  private async save() {
     if (!this.helperService.mobile) {
       return;
     }
@@ -44,21 +52,27 @@ export class LocationService {
     location.speed = +location.speed.toFixed(4);
     location.accuracy = +location.accuracy.toFixed(4);
 
-    if (this.networkService.connected$.value) {
-      this.emitToSocket(location);
-      return;
-    }
-
     await this.saveInLocalDatabase(location);
   }
 
   /**
-   * Method that sends the passed location to the backend using websockets.
-   *
-   * @param location defines an object that contains the `location` data.
+   * Method that synchronizes the data with the backend.
    */
-  private emitToSocket(location: ILocation) {
-    this.socket.emit('location', location);
+  private async sync() {
+    if (!this.sqliteService.database || !this.networkService.connected$.value) {
+      return;
+    }
+
+    try {
+      const locations = await this.getAllLocationsFromLocalDatabase();
+      const file = this.createFileFromString(JSON.stringify(locations));
+
+      await this.uploadService.uploadFile(file);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      await this.clearDatabase();
+    }
   }
 
   /**
@@ -83,22 +97,11 @@ export class LocationService {
     });
   }
 
-  private async sync() {
-    if (!this.sqliteService.database) {
-      return;
-    }
-    try {
-      const locations = await this.getAllLocationsFromLocalDatabase();
-      const file = this.createFileFromString(JSON.stringify(locations));
-
-      await this.uploadService.uploadFile(file);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      await this.clearDatabase();
-    }
-  }
-
+  /**
+   * Method that retrieves all the data saved in sqlite.
+   *
+   * @returns an array with all the saved objects.
+   */
   private async getAllLocationsFromLocalDatabase() {
     return new Promise<ILocation[]>((resolve, reject) => {
       this.sqliteService.database.transaction((tx) => {
@@ -126,6 +129,9 @@ export class LocationService {
     });
   }
 
+  /**
+   * Method that delete all the database data.
+   */
   private async clearDatabase() {
     new Promise<void>((resolve, reject) => {
       this.sqliteService.database.transaction((tx) => {
@@ -143,6 +149,12 @@ export class LocationService {
     });
   }
 
+  /**
+   * Method that creates a file based on the given string.
+   *
+   * @param content defines the content that will be saved.
+   * @returns the created js file.
+   */
   private createFileFromString(content: string) {
     return new File(
       [

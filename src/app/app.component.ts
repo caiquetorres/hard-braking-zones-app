@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { HelperService } from './services/helper/helper.service';
+import { LocationService } from './services/location/location.service';
 import { SettingsService } from './services/settings/settings.service';
 import { SqliteService } from './services/sqlite/sqlite.service';
 import { StatusBarService } from './services/status-bar/status-bar.service';
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
     private readonly settingsService: SettingsService,
     private readonly sqliteService: SqliteService,
     private readonly statusBarService: StatusBarService,
+    private readonly locationService: LocationService,
   ) {}
 
   async ngOnInit() {
@@ -32,6 +34,7 @@ export class AppComponent implements OnInit {
     await this.statusBarService.setColor('#c57600');
     this.setupScreenOrientation();
     this.settingsService.init();
+    this.locationService.init();
   }
 
   /**
