@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { HelperService } from '../helper/helper.service';
 import { NetworkService } from '../network/network.service';
 import { SqliteService } from '../sqlite/sqlite.service';
 import { UploadService } from '../upload/upload.service';
@@ -14,27 +13,44 @@ import { ILocation, Location } from '@hard-braking-zones/location';
   providedIn: 'root',
 })
 export class LocationService {
+  /**
+   * Property that defines the current saved data amount.
+   */
+  private savedData = 0;
+
+  /**
+   * Property that defines the sync interval time.
+   */
+  private readonly syncInterval = 100;
+
   constructor(
-    private readonly helperService: HelperService,
     private readonly networkService: NetworkService,
     private readonly sqliteService: SqliteService,
     private readonly uploadService: UploadService,
   ) {
     networkService.connected$.subscribe((connected) => {
-      if (connected) {
+      if (connected && this.savedData > this.syncInterval) {
+        this.savedData = 0;
         this.sync();
       }
     });
   }
 
-  init() {
-    setInterval(async () => {
-      await this.save();
-    }, 1000);
+  /**
+   * Method that initializes the service.
+   */
+  async init() {
+    await Location.addListener('location', async (location) => {
+      await this.save(location);
+      this.savedData++;
 
-    setInterval(async () => {
-      await this.sync();
-    }, 1000 * 100);
+      if (this.savedData === this.syncInterval) {
+        this.savedData = 0;
+        this.sync();
+      }
+    });
+
+    await Location.init();
   }
 
   /**
@@ -42,13 +58,7 @@ export class LocationService {
    * de sql database or, if connected with internet, into de Influx
    * database.
    */
-  private async save() {
-    if (!this.helperService.mobile) {
-      return;
-    }
-
-    const location = await Location.getLocation();
-
+  private async save(location: ILocation) {
     location.speed = +location.speed.toFixed(4);
     location.accuracy = +location.accuracy.toFixed(4);
 
@@ -65,9 +75,9 @@ export class LocationService {
 
     try {
       const locations = await this.getAllLocationsFromLocalDatabase();
-      const file = this.createFileFromString(JSON.stringify(locations));
-
-      await this.uploadService.uploadFile(file);
+      await this.uploadService.uploadFile(
+        this.createFileFromString(JSON.stringify(locations)),
+      );
     } catch (err) {
       console.error(err);
     } finally {
@@ -84,7 +94,7 @@ export class LocationService {
     await this.sqliteService.database.transaction((tx) => {
       tx.executeSql(
         `
-      INSERT INTO location (device_id, speed, accuracy, longitude, latitude) VALUES (?,?,?,?,?)
+      INSERT INTO location (device_id, speed, accuracy, longitude, latitude, timestamp) VALUES (?,?,?,?,?, datetime(\'now\', \'localtime\'))
     `,
         [
           location.deviceId,
