@@ -43,7 +43,8 @@ export class SqliteService {
             speed REAL NOT NULL,
             accuracy REAL NOT NULL,
             longitude VARCHAR(22) NOT NULL,
-            latitude VARCHAR(22) NOT NULL
+            latitude VARCHAR(22) NOT NULL,
+            timestamp DATE NOT NULL
           )
         `,
           [],
