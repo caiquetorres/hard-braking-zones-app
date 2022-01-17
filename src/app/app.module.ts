@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localePt from '@angular/common/locales/pt';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { SQLite } from '@ionic-enterprise/secure-storage/ngx';
@@ -13,6 +13,7 @@ import { MenuModule } from './components/menu/menu.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SentryErrorHandler } from './errors/sentry.error-handler';
 import { BaseUrlInterceptor } from './interceptors/base-url/base-url.interceptor';
 
 registerLocaleData(localePt);
@@ -40,6 +41,10 @@ registerLocaleData(localePt);
       provide: HTTP_INTERCEPTORS,
       useClass: BaseUrlInterceptor,
       multi: true,
+    },
+    {
+      provide: ErrorHandler,
+      useClass: SentryErrorHandler,
     },
   ],
   bootstrap: [AppComponent],

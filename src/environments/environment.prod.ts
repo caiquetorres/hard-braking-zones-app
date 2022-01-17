@@ -12,4 +12,8 @@ export const environment = {
     version: '/version',
     upload: '/locations/upload',
   },
+  setry: {
+    environment: 'production',
+    dsn: '',
+  },
 };

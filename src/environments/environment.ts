@@ -16,6 +16,10 @@ export const environment = {
     version: '/version',
     upload: '/locations/upload',
   },
+  sentry: {
+    environment: 'development',
+    dsn: '',
+  },
 };
 
 /*
