@@ -41,6 +41,8 @@
     "@ionic/storage": "^3.0.4",
     "@ionic/storage-angular": "^3.0.6",
     "@nestjsx/crud-request": "^5.0.0-alpha.3",
+    "@sentry/angular": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "es6-promise-plugin": "^4.2.2",
     "guid-typescript": "^1.0.9",
