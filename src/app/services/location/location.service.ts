@@ -10,7 +10,7 @@ import { environment } from '../../../environments/environment';
 import { ILocation, Location } from '@hard-braking-zones/location';
 import { Socket } from 'ngx-socket-io';
 
-type ICompleteLocation = ILocation & { timestamp: Date };
+type ICompleteLocation = ILocation & { timestamp: number };
 
 /**
  * Service that deals with all the logic related with `location`.
@@ -55,7 +55,6 @@ export class LocationService {
     this.socket.connect();
 
     await Location.addListener('location', (location) => this.save(location));
-
     await Location.init({
       interval: environment.constants.getLocationIntervalInSeconds,
     });
@@ -72,7 +71,7 @@ export class LocationService {
     const formatedLocation: ICompleteLocation = {
       speed: +speed.toFixed(4),
       accuracy: +accuracy.toFixed(4),
-      timestamp: new Date(),
+      timestamp: new Date().getTime(),
       ...rest,
     };
 
@@ -87,16 +86,17 @@ export class LocationService {
    * Method that synchronizes the data with the backend.
    */
   private async sync() {
+    this.loading$.next(true);
     try {
       const file = this.createFileFromString(JSON.stringify(this.locations));
       await this.uploadService.uploadFile(file);
     } catch (err) {
       console.error(err);
+      throw err;
     } finally {
+      this.loading$.next(false);
       this.locations = [];
     }
-
-    return true;
   }
 
   /**
