@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
+import { HelperService } from '../helper/helper.service';
 import { NetworkService } from '../network/network.service';
-import { SqliteService } from '../sqlite/sqlite.service';
 import { UploadService } from '../upload/upload.service';
 
+import { environment } from '../../../environments/environment';
+
 import { ILocation, Location } from '@hard-braking-zones/location';
+import { Socket } from 'ngx-socket-io';
+
+type ICompleteLocation = ILocation & { timestamp: Date };
 
 /**
  * Service that deals with all the logic related with `location`.
@@ -14,23 +20,25 @@ import { ILocation, Location } from '@hard-braking-zones/location';
 })
 export class LocationService {
   /**
-   * Property that defines the current saved data amount.
+   * Property that defines an object that represents an event that is
+   * called when the loading stars or ends.
    */
-  private savedData = 0;
+  loading$ = new BehaviorSubject<boolean>(false);
 
   /**
-   * Property that defines the sync interval time.
+   * Property that defines an array that contains all the saved
+   * locations when the app was running in offline mode.
    */
-  private readonly syncInterval = 100;
+  private locations: ICompleteLocation[] = [];
 
   constructor(
+    private readonly socket: Socket,
     private readonly networkService: NetworkService,
-    private readonly sqliteService: SqliteService,
+    private readonly helperService: HelperService,
     private readonly uploadService: UploadService,
   ) {
     networkService.connected$.subscribe((connected) => {
-      if (connected && this.savedData > this.syncInterval) {
-        this.savedData = 0;
+      if (connected && this.helperService.mobile) {
         this.sync();
       }
     });
@@ -40,17 +48,17 @@ export class LocationService {
    * Method that initializes the service.
    */
   async init() {
-    await Location.addListener('location', async (location) => {
-      await this.save(location);
-      this.savedData++;
+    if (!this.helperService.mobile) {
+      return;
+    }
 
-      if (this.savedData === this.syncInterval) {
-        this.savedData = 0;
-        this.sync();
-      }
+    this.socket.connect();
+
+    await Location.addListener('location', (location) => this.save(location));
+
+    await Location.init({
+      interval: environment.constants.getLocationIntervalInSeconds,
     });
-
-    await Location.init();
   }
 
   /**
@@ -58,105 +66,37 @@ export class LocationService {
    * de sql database or, if connected with internet, into de Influx
    * database.
    */
-  private async save(location: ILocation) {
-    location.speed = +location.speed.toFixed(4);
-    location.accuracy = +location.accuracy.toFixed(4);
+  private save(location: ILocation) {
+    const { speed, accuracy, ...rest } = location;
 
-    await this.saveInLocalDatabase(location);
+    const formatedLocation: ICompleteLocation = {
+      speed: +speed.toFixed(4),
+      accuracy: +accuracy.toFixed(4),
+      timestamp: new Date(),
+      ...rest,
+    };
+
+    if (this.networkService.connected$.value) {
+      this.socket.emit('location', formatedLocation);
+    } else {
+      this.locations.push(formatedLocation);
+    }
   }
 
   /**
    * Method that synchronizes the data with the backend.
    */
   private async sync() {
-    if (!this.sqliteService.database || !this.networkService.connected$.value) {
-      return;
-    }
-
     try {
-      const locations = await this.getAllLocationsFromLocalDatabase();
-      await this.uploadService.uploadFile(
-        this.createFileFromString(JSON.stringify(locations)),
-      );
+      const file = this.createFileFromString(JSON.stringify(this.locations));
+      await this.uploadService.uploadFile(file);
     } catch (err) {
       console.error(err);
     } finally {
-      await this.clearDatabase();
+      this.locations = [];
     }
-  }
 
-  /**
-   * Method that saves into the sql database the passed `location` data.
-   *
-   * @param location defines an object that contains the `location` data.
-   */
-  private async saveInLocalDatabase(location: ILocation) {
-    await this.sqliteService.database.transaction((tx) => {
-      tx.executeSql(
-        `
-      INSERT INTO location (device_id, speed, accuracy, longitude, latitude, timestamp) VALUES (?,?,?,?,?, datetime(\'now\', \'localtime\'))
-    `,
-        [
-          location.deviceId,
-          location.speed.toFixed(4),
-          location.accuracy.toFixed(4),
-          location.longitude,
-          location.latitude,
-        ],
-      );
-    });
-  }
-
-  /**
-   * Method that retrieves all the data saved in sqlite.
-   *
-   * @returns an array with all the saved objects.
-   */
-  private async getAllLocationsFromLocalDatabase() {
-    return new Promise<ILocation[]>((resolve, reject) => {
-      this.sqliteService.database.transaction((tx) => {
-        const objects = [];
-        tx.executeSql(
-          'SELECT * from location',
-          [],
-          (_: any, result: any) => {
-            for (let i = 0; i < result.rows.length; i++) {
-              const object = result.rows.item(i);
-
-              delete object.id;
-              object.deviceId = object.device_id;
-              delete object.device_id;
-
-              objects.push(object);
-            }
-            resolve(objects);
-          },
-          (err: any) => {
-            reject(err);
-          },
-        );
-      });
-    });
-  }
-
-  /**
-   * Method that delete all the database data.
-   */
-  private async clearDatabase() {
-    new Promise<void>((resolve, reject) => {
-      this.sqliteService.database.transaction((tx) => {
-        tx.executeSql(
-          'DELETE FROM location',
-          [],
-          () => {
-            resolve();
-          },
-          (err: any) => {
-            reject(err);
-          },
-        );
-      });
-    });
+    return true;
   }
 
   /**
