@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://192.168.15.13:3000/v1',
+  baseUrl: '',
   mocked: false,
   version: '1.0.0',
   keys: {
