@@ -20,6 +20,9 @@ export const environment = {
     environment: 'development',
     dsn: '',
   },
+  constants: {
+    getLocationIntervalInSeconds: 2,
+  },
 };
 
 /*
