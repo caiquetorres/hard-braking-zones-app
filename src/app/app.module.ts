@@ -15,7 +15,7 @@ import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SentryErrorHandler } from './errors/sentry.error-handler';
+import { SentryErrorHandler } from './errors/sentry/sentry.error-handler';
 import { BaseUrlInterceptor } from './interceptors/base-url/base-url.interceptor';
 
 import { SocketIoModule } from 'ngx-socket-io';
