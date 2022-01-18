@@ -16,4 +16,7 @@ export const environment = {
     environment: 'production',
     dsn: '',
   },
+  constants: {
+    getLocationIntervalInSeconds: 2,
+  },
 };
