@@ -4,6 +4,7 @@ import { IInfo } from '../../models/proxies/info.interface';
 
 import { AlertService } from '../../services/alert/alert.service';
 import { InfoService } from '../../services/info/info.service';
+import { LoadingService } from '../../services/loading/loading.service';
 import { VersionService } from '../../services/version/version.service';
 
 import { environment } from '../../../environments/environment';
@@ -37,6 +38,7 @@ export class HomePage implements OnInit {
     private readonly versionService: VersionService,
     private readonly infoService: InfoService,
     private readonly alertService: AlertService,
+    private readonly loadingService: LoadingService,
   ) {}
 
   async ngOnInit() {
