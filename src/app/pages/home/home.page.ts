@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { IInfo } from '../../models/proxies/info.interface';
+import { IVersion } from '../../models/proxies/version.interface';
 
 import { AlertService } from '../../services/alert/alert.service';
+import { BrowserService } from '../../services/browser/browser.service';
 import { InfoService } from '../../services/info/info.service';
 import { VersionService } from '../../services/version/version.service';
 
@@ -37,6 +39,7 @@ export class HomePage implements OnInit {
     private readonly versionService: VersionService,
     private readonly infoService: InfoService,
     private readonly alertService: AlertService,
+    private readonly browserService: BrowserService,
   ) {}
 
   async ngOnInit() {
@@ -46,7 +49,7 @@ export class HomePage implements OnInit {
     const version = await this.fetchVersion();
 
     if (version.value.version !== environment.version) {
-      await this.showAlert();
+      await this.showAlert(version);
     }
 
     this.loading = false;
@@ -55,7 +58,7 @@ export class HomePage implements OnInit {
   /**
    * Method that shows the application `alert`.
    */
-  private async showAlert() {
+  private async showAlert(version: IVersion) {
     await this.alertService.present({
       header: 'Nova versão',
       message: `Uma nova versão do app foi encontrada, deseja baixa-la?`,
@@ -64,7 +67,7 @@ export class HomePage implements OnInit {
         {
           text: 'Fazer download',
           handler: async () => {
-            console.log('dowload');
+            await this.browserService.open(version.value.url);
           },
         },
       ],

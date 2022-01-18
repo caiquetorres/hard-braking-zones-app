@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 import { NetworkService } from '../network/network.service';
 import { SqliteService } from '../sqlite/sqlite.service';
@@ -28,29 +29,40 @@ export class LocationService {
     private readonly sqliteService: SqliteService,
     private readonly uploadService: UploadService,
   ) {
-    networkService.connected$.subscribe((connected) => {
-      if (connected && this.savedData > this.syncInterval) {
-        this.savedData = 0;
-        this.sync();
-      }
+    LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 1,
+          title: 'Test',
+          body: 'Lorem ipsum',
+          schedule: {
+            every: 'second',
+          },
+        },
+      ],
     });
+
+    // networkService.connected$.subscribe((connected) => {
+    //   if (connected && this.savedData > this.syncInterval) {
+    //     this.savedData = 0;
+    //     this.sync();
+    //   }
+    // });
   }
 
   /**
    * Method that initializes the service.
    */
   async init() {
-    await Location.addListener('location', async (location) => {
-      await this.save(location);
-      this.savedData++;
-
-      if (this.savedData === this.syncInterval) {
-        this.savedData = 0;
-        this.sync();
-      }
-    });
-
-    await Location.init();
+    // await Location.addListener('location', async (location) => {
+    //   await this.save(location);
+    //   this.savedData++;
+    //   if (this.savedData === this.syncInterval) {
+    //     this.savedData = 0;
+    //     this.sync();
+    //   }
+    // });
+    // await Location.init({ interval: 1 });
   }
 
   /**

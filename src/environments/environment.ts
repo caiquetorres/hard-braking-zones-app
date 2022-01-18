@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   baseUrl: 'http://192.168.15.13:3000/v1',
   mocked: false,
-  version: '1.0.0',
+  version: '1.1.0',
   keys: {
     settings: 'UC-SETTINGS',
   },
