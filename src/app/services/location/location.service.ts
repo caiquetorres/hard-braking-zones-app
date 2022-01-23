@@ -8,9 +8,12 @@ import { UploadService } from '../upload/upload.service';
 import { environment } from '../../../environments/environment';
 
 import { ILocation, Location } from '@hard-braking-zones/location';
-import { Socket } from 'ngx-socket-io';
+import { v4 } from 'uuid';
 
-type ICompleteLocation = ILocation & { timestamp: number };
+type ICompleteLocation = ILocation & {
+  timestamp: number;
+  identifier: string;
+};
 
 /**
  * Service that deals with all the logic related with `location`.
@@ -19,6 +22,11 @@ type ICompleteLocation = ILocation & { timestamp: number };
   providedIn: 'root',
 })
 export class LocationService {
+  /**
+   * Property that defines an object that represents the websocket client.
+   */
+  websocket: WebSocket;
+
   /**
    * Property that defines an object that represents an event that is
    * called when the loading stars or ends.
@@ -32,7 +40,6 @@ export class LocationService {
   private locations: ICompleteLocation[] = [];
 
   constructor(
-    private readonly socket: Socket,
     private readonly networkService: NetworkService,
     private readonly helperService: HelperService,
     private readonly uploadService: UploadService,
@@ -52,11 +59,12 @@ export class LocationService {
       return;
     }
 
-    this.socket.connect();
-
-    await Location.addListener('location', (location) => this.save(location));
-    await Location.init({
-      interval: environment.constants.getLocationIntervalInSeconds,
+    this.websocket = new WebSocket(environment.baseWsUrl);
+    this.websocket.addEventListener('open', async () => {
+      await Location.addListener('location', (location) => this.save(location));
+      await Location.init({
+        interval: environment.constants.getLocationIntervalInSeconds,
+      });
     });
   }
 
@@ -72,11 +80,12 @@ export class LocationService {
       speed: +speed.toFixed(4),
       accuracy: +accuracy.toFixed(4),
       timestamp: new Date().getTime(),
+      identifier: v4(),
       ...rest,
     };
 
     if (this.networkService.connected$.value) {
-      this.socket.emit('location', formatedLocation);
+      this.websocket.send(JSON.stringify(formatedLocation));
     } else {
       this.locations.push(formatedLocation);
     }
