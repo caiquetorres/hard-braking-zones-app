@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: '',
+  baseWsUrl: '',
   mocked: false,
   version: '1.0.0',
   keys: {

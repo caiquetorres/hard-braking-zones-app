@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   baseUrl: '',
+  baseWsUrl: '',
   mocked: false,
   version: '1.0.0',
   keys: {
@@ -12,7 +13,7 @@ export const environment = {
     version: '/version',
     upload: '/locations/upload',
   },
-  setry: {
+  sentry: {
     environment: 'production',
     dsn: '',
   },
