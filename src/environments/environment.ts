@@ -7,7 +7,7 @@ export const environment = {
   baseUrl: '',
   baseWsUrl: '',
   mocked: false,
-  version: '1.0.0',
+  version: '1.1.0',
   keys: {
     settings: 'UC-SETTINGS',
   },

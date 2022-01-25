@@ -50,6 +50,7 @@ export class LocationService {
         this.websocket ??= new WebSocket(environment.baseWsUrl);
       }
     });
+
   }
 
   /**
