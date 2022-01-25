@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { IWsResponse } from '../../models/interfaces/ws-response.interface';
+
 import { HelperService } from '../helper/helper.service';
 import { NetworkService } from '../network/network.service';
 import { UploadService } from '../upload/upload.service';
@@ -8,11 +10,9 @@ import { UploadService } from '../upload/upload.service';
 import { environment } from '../../../environments/environment';
 
 import { ILocation, Location } from '@hard-braking-zones/location';
-import { v4 } from 'uuid';
 
 type ICompleteLocation = ILocation & {
   timestamp: number;
-  identifier: string;
 };
 
 /**
@@ -47,6 +47,7 @@ export class LocationService {
     networkService.connected$.subscribe((connected) => {
       if (connected && this.helperService.mobile) {
         this.sync();
+        this.websocket ??= new WebSocket(environment.baseWsUrl);
       }
     });
   }
@@ -80,12 +81,16 @@ export class LocationService {
       speed: +speed.toFixed(4),
       accuracy: +accuracy.toFixed(4),
       timestamp: new Date().getTime(),
-      identifier: v4(),
       ...rest,
     };
 
     if (this.networkService.connected$.value) {
-      this.websocket.send(JSON.stringify(formatedLocation));
+      this.websocket.send(
+        JSON.stringify({
+          event: 'location',
+          data: formatedLocation,
+        } as IWsResponse<ICompleteLocation>),
+      );
     } else {
       this.locations.push(formatedLocation);
     }
