@@ -50,7 +50,6 @@ export class LocationService {
         this.websocket ??= new WebSocket(environment.baseWsUrl);
       }
     });
-
   }
 
   /**
@@ -61,13 +60,12 @@ export class LocationService {
       return;
     }
 
-    this.websocket = new WebSocket(environment.baseWsUrl);
-    this.websocket.addEventListener('open', async () => {
-      await Location.addListener('location', (location) => this.save(location));
-      await Location.init({
-        interval: environment.constants.getLocationIntervalInSeconds,
-      });
+    await Location.addListener('location', (location) => this.save(location));
+    await Location.init({
+      interval: environment.constants.getLocationIntervalInSeconds,
     });
+
+    this.websocket = new WebSocket(environment.baseWsUrl);
   }
 
   /**
@@ -86,12 +84,23 @@ export class LocationService {
     };
 
     if (this.networkService.connected$.value) {
-      this.websocket.send(
-        JSON.stringify({
-          event: 'location',
-          data: formatedLocation,
-        } as IWsResponse<ICompleteLocation>),
-      );
+      console.log({
+        state: this.websocket.readyState,
+      });
+
+      if (this.websocket.readyState === this.websocket.OPEN) {
+        this.websocket.send(
+          JSON.stringify({
+            event: 'location',
+            data: formatedLocation,
+          } as IWsResponse<ICompleteLocation>),
+        );
+      } else if (
+        this.websocket.readyState === this.websocket.CLOSED ||
+        this.websocket.readyState === this.websocket.CLOSING
+      ) {
+        this.websocket = new WebSocket(environment.baseWsUrl);
+      }
     } else {
       this.locations.push(formatedLocation);
     }
