@@ -21,6 +21,11 @@
     </ion-button>
 
     <div class="data">
+      <section>
+        <ion-title>Tempo de viagem</ion-title>
+        <ion-text>{{ tripDuration | countUp }}</ion-text>
+      </section>
+
       <section *ngIf="position">
         <ion-title>Posição</ion-title>
         <ion-text>Latitude: {{ position.coords.latitude }}</ion-text>
