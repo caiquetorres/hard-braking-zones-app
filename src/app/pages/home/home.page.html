@@ -16,6 +16,10 @@
       </em>
     </ion-text>
 
+    <ion-button class="hbz-button-primary" (click)="toggleTracking()">
+      {{ tracking ? 'Parar viagem' : 'Iniciar viagem' }}
+    </ion-button>
+
     <div class="data">
       <section *ngIf="position">
         <ion-title>Posição</ion-title>
@@ -38,13 +42,9 @@
       </section>
     </div>
 
-    <ion-text *ngIf="tracking" class="obs">
+    <ion-text class="obs">
       Caso o tempo de viagem exceda 30 minutos iremos finaliza-la
       automaticamente.
     </ion-text>
-
-    <ion-button (click)="tracking = !tracking">
-      {{ tracking ? 'Parar viagem' : 'Iniciar viagem' }}
-    </ion-button>
   </div>
 </ion-content>

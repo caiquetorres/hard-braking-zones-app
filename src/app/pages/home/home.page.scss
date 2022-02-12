@@ -36,6 +36,10 @@
       }
     }
 
+    & > .chart {
+      pointer-events: none;
+    }
+
     & > .obs {
       color: orange;
     }
