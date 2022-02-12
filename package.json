@@ -46,6 +46,7 @@
     "@sentry/angular": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
     "@types/uuid": "^8.3.4",
+    "chart.js": "^3.7.1",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "es6-promise-plugin": "^4.2.2",
     "guid-typescript": "^1.0.9",
