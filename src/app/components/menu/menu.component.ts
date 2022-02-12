@@ -40,4 +40,12 @@ export class MenuComponent {
     await this.menuController.close();
     await this.navController.navigateForward('/feedback');
   }
+
+  /**
+   * Method that redirects the user to the `about` page.
+   */
+  async goToAbout() {
+    await this.menuController.close();
+    await this.navController.navigateForward('/about');
+  }
 }

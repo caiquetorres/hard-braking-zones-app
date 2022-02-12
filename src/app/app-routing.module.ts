@@ -14,11 +14,22 @@ const routes: Routes = [
   },
   {
     path: 'feedback',
-    loadChildren: () => import('./pages/feedback/feedback.module').then( m => m.FeedbackPageModule)
+    loadChildren: () =>
+      import('./pages/feedback/feedback.module').then(
+        (m) => m.FeedbackPageModule,
+      ),
   },
   {
     path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+    loadChildren: () =>
+      import('./pages/settings/settings.module').then(
+        (m) => m.SettingsPageModule,
+      ),
+  },
+  {
+    path: 'about',
+    loadChildren: () =>
+      import('./pages/about/about.module').then((m) => m.AboutPageModule),
   },
 ];
 

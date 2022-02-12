@@ -1,0 +1,17 @@
+<ion-header class="hbz-header-primary">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Início</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="hbz-page-primary">
+  <ion-row *ngIf="loading" class="ion-justify-content-center">
+    <ion-spinner class="hbz-spinner-primary"></ion-spinner>
+  </ion-row>
+  <ion-text *ngIf="!loading" class="ion-text-justify">
+    <p>{{ info.value }}</p>
+  </ion-text>
+</ion-content>
