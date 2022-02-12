@@ -16,6 +16,7 @@ import { AlertService } from '../../services/alert/alert.service';
 import { BrowserService } from '../../services/browser/browser.service';
 import { DeviceService } from '../../services/device/device.service';
 import { GeolocationService } from '../../services/geolocation/geolocation.service';
+import { KeepAwakeService } from '../../services/keep-awake/keep-awake.service';
 import { MotionService } from '../../services/motion/motion.service';
 import { PointService } from '../../services/point/point.service';
 import { VersionService } from '../../services/version/version.service';
@@ -75,14 +76,26 @@ export class HomePage implements OnInit, AfterViewInit {
   acceleration: Acceleration;
 
   /**
+   * Property that defines the current amount of data present in
+   * the chart.
+   */
+  private counter = 0;
+
+  /**
    * Property that defines the device unique identifier.
    */
   private deviceId: string;
 
-  private couter = 0;
-
+  /**
+   * Property that defines an object that represents the current
+   * chart, that is displaying the acceleration data.
+   */
   private chart: Chart;
 
+  /**
+   * Property that defines an object that contains all the
+   * acceleration chart data.
+   */
   private readonly chartOptions: ChartConfiguration = {
     type: 'line',
     data: {
@@ -128,6 +141,7 @@ export class HomePage implements OnInit, AfterViewInit {
   };
 
   constructor(
+    private readonly keepAwakeService: KeepAwakeService,
     private readonly geolocationService: GeolocationService,
     private readonly motionService: MotionService,
     private readonly deviceService: DeviceService,
@@ -139,7 +153,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     setInterval(() => {
-      this.updatePoint();
+      this.createPoint();
       this.updateChart();
 
       if (!this.tracking) {
@@ -160,12 +174,33 @@ export class HomePage implements OnInit, AfterViewInit {
     this.chart = new Chart(this.canvasRef.nativeElement, this.chartOptions);
   }
 
-  private async updatePoint() {
+  /**
+   * Method that starts or stops the application of tracking the
+   * user acceleration, position and id.
+   */
+  async toggleTracking() {
+    this.tracking = !this.tracking;
+
+    if (this.tracking) {
+      await this.keepAwakeService.keepAwake();
+    } else {
+      await this.keepAwakeService.allowSleep();
+    }
+  }
+
+  /**
+   * Method that creates a new point, allowing to see it data in
+   * the page and saving it later.
+   */
+  private async createPoint() {
     this.acceleration = this.getAcceleration();
     this.position = await this.getPosition();
     this.deviceId ??= await this.getDeviceId();
   }
 
+  /**
+   * Method that updates the chart view.
+   */
   private updateChart() {
     if (!this.chart || !this.acceleration) {
       return;
@@ -178,7 +213,7 @@ export class HomePage implements OnInit, AfterViewInit {
       this.chart.update();
     }
 
-    this.chart.data.labels.push(this.couter++);
+    this.chart.data.labels.push(this.counter++);
 
     this.chart.data.datasets[0].data.push(this.acceleration.x);
     this.chart.data.datasets[1].data.push(this.acceleration.y);
