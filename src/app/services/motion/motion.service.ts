@@ -30,11 +30,12 @@ export class MotionService {
     Motion.addListener('accel', (value) => {
       const { acceleration } = value;
 
-      acceleration.x ??= 0;
-      acceleration.y ??= 0;
-      acceleration.z ??= 0;
+      this.acceleration = {
+        x: acceleration.x ?? 0,
+        y: acceleration.y ?? 0,
 
-      this.acceleration = value.acceleration;
+        z: acceleration.z ?? 0,
+      };
     });
   }
 
