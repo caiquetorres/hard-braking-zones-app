@@ -7,4 +7,40 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="hbz-page-primary"></ion-content>
+<ion-content class="hbz-page-primary">
+  <div class="container">
+    <ion-text class="status">
+      Status:
+      <em>
+        {{ tracking ? 'Coletando dados' : 'Aguardando início da viagem' }}
+      </em>
+    </ion-text>
+
+    <div class="data">
+      <section *ngIf="position">
+        <ion-title>Posição</ion-title>
+        <ion-text>Latitude: {{ position.coords.latitude }}</ion-text>
+        <ion-text>Longitude: {{ position.coords.longitude }}</ion-text>
+        <ion-text>
+          Velocidade: {{ position.coords.speed | number:'1.5-5' }}
+        </ion-text>
+      </section>
+
+      <section *ngIf="acceleration">
+        <ion-title *ngIf="acceleration">Aceleração</ion-title>
+        <ion-text>x: {{ acceleration.x | number:'1.5-5' }}</ion-text>
+        <ion-text>y: {{ acceleration.y | number:'1.5-5' }}</ion-text>
+        <ion-text>z: {{ acceleration.z | number:'1.5-5' }}</ion-text>
+      </section>
+    </div>
+
+    <ion-text *ngIf="tracking" class="obs">
+      Caso o tempo de viagem exceda 30 minutos iremos finaliza-la
+      automaticamente.
+    </ion-text>
+
+    <ion-button (click)="tracking = !tracking">
+      {{ tracking ? 'Parar viagem' : 'Iniciar viagem' }}
+    </ion-button>
+  </div>
+</ion-content>

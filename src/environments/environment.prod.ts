@@ -18,6 +18,7 @@ export const environment = {
     dsn: '',
   },
   constants: {
-    getLocationIntervalInSeconds: 2,
+    getPointInterval: 250,
+    savePointsAmount: 240,
   },
 };

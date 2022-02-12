@@ -7,7 +7,7 @@ export const environment = {
   baseUrl: '',
   baseWsUrl: '',
   mocked: false,
-  version: '1.1.0',
+  version: '1.0.0',
   keys: {
     settings: 'UC-SETTINGS',
   },
@@ -22,7 +22,8 @@ export const environment = {
     dsn: '',
   },
   constants: {
-    getLocationIntervalInSeconds: 2,
+    getPointInterval: 250,
+    savePointsAmount: 240,
   },
 };
 
