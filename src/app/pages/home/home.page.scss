@@ -1,0 +1,15 @@
+:host section {
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  & > ion-title {
+    margin-bottom: 0.5rem;
+  }
+
+  & > span {
+    display: inline-flex;
+
+    width: 100%;
+  }
+}

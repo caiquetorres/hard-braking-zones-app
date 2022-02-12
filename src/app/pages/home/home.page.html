@@ -7,4 +7,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="hbz-page-primary"></ion-content>
+<ion-content class="hbz-page-primary">
+  <section *ngIf="position">
+    <ion-title>Posição</ion-title>
+    <span>Latitude: {{ position.coords.latitude }}</span>
+    <span>Longitude: {{ position.coords.longitude }}</span>
+    <span>Velocidade: {{ position.coords.speed | number:'1.5-5' }}</span>
+  </section>
+
+  <section *ngIf="acceleration">
+    <ion-title *ngIf="acceleration">Aceleração</ion-title>
+    <span>x: {{acceleration.x | number:'1.5-5' }}</span>
+    <span>y: {{acceleration.y | number:'1.5-5' }}</span>
+    <span>z: {{acceleration.z | number:'1.5-5' }}</span>
+  </section>
+</ion-content>
