@@ -64,6 +64,11 @@ export class HomePage implements OnInit, AfterViewInit {
   tracking = false;
 
   /**
+   * Property that defines the trip duration.
+   */
+  tripDuration = 0;
+
+  /**
    * Property that defines an object that contanis all the device
    * position data.
    */
@@ -91,6 +96,12 @@ export class HomePage implements OnInit, AfterViewInit {
    * chart, that is displaying the acceleration data.
    */
   private chart: Chart;
+
+  /**
+   * Property that defines an object that represents the second
+   * interval, used to track the trip duration.
+   */
+  private tripDurationInterval: ReturnType<typeof setInterval>;
 
   /**
    * Property that defines an object that contains all the
@@ -166,7 +177,7 @@ export class HomePage implements OnInit, AfterViewInit {
     const version = await this.fetchVersion();
 
     if (version.value.version !== environment.version) {
-      await this.showAlert(version);
+      await this.showVersionAlert(version);
     }
   }
 
@@ -182,8 +193,11 @@ export class HomePage implements OnInit, AfterViewInit {
     this.tracking = !this.tracking;
 
     if (this.tracking) {
+      this.tripDurationInterval = setInterval(() => this.tripDuration++, 1000);
       await this.keepAwakeService.keepAwake();
     } else {
+      this.tripDuration = 0;
+      clearInterval(this.tripDurationInterval);
       await this.keepAwakeService.allowSleep();
     }
   }
@@ -245,7 +259,7 @@ export class HomePage implements OnInit, AfterViewInit {
   /**
    * Method that shows the application `alert`.
    */
-  private async showAlert(version: IVersion) {
+  private async showVersionAlert(version: IVersion) {
     await this.alertService.present({
       header: 'Nova versão',
       message: `Uma nova versão do app foi encontrada, deseja baixa-la?`,
