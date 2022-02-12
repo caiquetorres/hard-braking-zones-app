@@ -32,6 +32,10 @@
         <ion-text>y: {{ acceleration.y | number:'1.5-5' }}</ion-text>
         <ion-text>z: {{ acceleration.z | number:'1.5-5' }}</ion-text>
       </section>
+
+      <section class="chart">
+        <canvas #canvasRef></canvas>
+      </section>
     </div>
 
     <ion-text *ngIf="tracking" class="obs">
