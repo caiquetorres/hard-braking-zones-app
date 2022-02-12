@@ -1,4 +1,11 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostBinding,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Position } from '@capacitor/geolocation';
 import { Acceleration } from '@capacitor/motion';
 
@@ -15,6 +22,20 @@ import { VersionService } from '../../services/version/version.service';
 
 import { environment } from '../../../environments/environment';
 
+import {
+  Chart,
+  registerables,
+  ChartConfiguration,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+} from 'chart.js';
+
+Chart.register(...registerables);
+Chart.register(LineController, LineElement, PointElement, LinearScale, Title);
+
 /**
  * Component that represents the application home page.
  *
@@ -28,7 +49,13 @@ import { environment } from '../../../environments/environment';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, AfterViewInit {
+  /**
+   * Property that defines an object that represents the page canvas.
+   */
+  @ViewChild('canvasRef')
+  canvasRef: ElementRef<HTMLCanvasElement>;
+
   /**
    * Property that says if the user is collecting the data or not.
    */
@@ -52,6 +79,54 @@ export class HomePage implements OnInit {
    */
   private deviceId: string;
 
+  private couter = 0;
+
+  private chart: Chart;
+
+  private readonly chartOptions: ChartConfiguration = {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          fill: false,
+          borderColor: 'red',
+          pointRadius: 0,
+        },
+        {
+          data: [],
+          fill: false,
+          borderColor: 'green',
+          pointRadius: 0,
+        },
+        {
+          data: [],
+          fill: false,
+          borderColor: 'blue',
+          pointRadius: 0,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        xAxis: {
+          display: false,
+          suggestedMin: 100,
+        },
+        yAxis: {
+          suggestedMin: -20,
+          suggestedMax: 20,
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  };
+
   constructor(
     private readonly geolocationService: GeolocationService,
     private readonly motionService: MotionService,
@@ -64,6 +139,13 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
     setInterval(() => {
+      this.updatePoint();
+      this.updateChart();
+
+      if (!this.tracking) {
+        return;
+      }
+
       this.savePoint();
     }, environment.constants.getPointInterval);
 
@@ -74,12 +156,35 @@ export class HomePage implements OnInit {
     }
   }
 
-  startTrip() {
-    this.tracking = true;
+  ngAfterViewInit() {
+    this.chart = new Chart(this.canvasRef.nativeElement, this.chartOptions);
   }
 
-  stopTrip() {
-    this.tracking = false;
+  private async updatePoint() {
+    this.acceleration = this.getAcceleration();
+    this.position = await this.getPosition();
+    this.deviceId ??= await this.getDeviceId();
+  }
+
+  private updateChart() {
+    if (!this.chart || !this.acceleration) {
+      return;
+    }
+
+    if (this.chart.data.labels.length > 20) {
+      this.chart.data.labels.shift();
+      this.chart.data.datasets.forEach((dataset) => dataset.data.shift());
+
+      this.chart.update();
+    }
+
+    this.chart.data.labels.push(this.couter++);
+
+    this.chart.data.datasets[0].data.push(this.acceleration.x);
+    this.chart.data.datasets[1].data.push(this.acceleration.y);
+    this.chart.data.datasets[2].data.push(this.acceleration.z);
+
+    this.chart.update();
   }
 
   /**
@@ -87,14 +192,6 @@ export class HomePage implements OnInit {
    * and acceleration.
    */
   private async savePoint() {
-    this.acceleration = this.getAcceleration();
-    this.position = await this.getPosition();
-    this.deviceId ??= await this.getDeviceId();
-
-    if (!this.tracking) {
-      return;
-    }
-
     const point: IPoint = {
       latitude: this.position.coords.latitude,
       longitude: this.position.coords.longitude,
