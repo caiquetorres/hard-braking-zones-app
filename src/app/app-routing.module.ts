@@ -19,13 +19,13 @@ const routes: Routes = [
         (m) => m.FeedbackPageModule,
       ),
   },
-  {
-    path: 'settings',
-    loadChildren: () =>
-      import('./pages/settings/settings.module').then(
-        (m) => m.SettingsPageModule,
-      ),
-  },
+  // {
+  //   path: 'settings',
+  //   loadChildren: () =>
+  //     import('./pages/settings/settings.module').then(
+  //       (m) => m.SettingsPageModule,
+  //     ),
+  // },
   {
     path: 'about',
     loadChildren: () =>
