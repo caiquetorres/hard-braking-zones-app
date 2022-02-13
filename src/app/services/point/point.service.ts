@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { IPoint } from '../../models/interfaces/point.interface';
 
+import { AlertService } from '../alert/alert.service';
 import { ConvertService } from '../convert/convert.service';
 import { NetworkService } from '../network/network.service';
 import { UploadService } from '../upload/upload.service';
@@ -43,6 +44,7 @@ export class PointService {
     networkService: NetworkService,
     private readonly convertService: ConvertService,
     private readonly uploadService: UploadService,
+    private readonly alertService: AlertService,
   ) {
     networkService.connected$
       .asObservable()
@@ -71,8 +73,16 @@ export class PointService {
     const temp = [...this.points];
     this.points = [];
 
+    await this.alertService.present({
+      header: 'Enviando...',
+      message: `Seus dados estão sendo enviados para os nossos servidores, aguarde um momento`,
+    });
     const file = this.convertService.stringToFile(JSON.stringify(temp));
 
-    // await this.uploadService.uploadFile(file);
+    try {
+      await this.uploadService.uploadFile(file);
+    } finally {
+      await this.alertService.dismiss();
+    }
   }
 }
