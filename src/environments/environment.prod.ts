@@ -17,6 +17,7 @@ export const environment = {
     dsn: '',
   },
   constants: {
+    maxTripDurationInMinutes: 30,
     getPointInterval: 250,
     savePointsAmount: 240,
   },
