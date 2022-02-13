@@ -1,6 +1,6 @@
 export interface IPoint {
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   speed: number;
   accuracy: number;
   acclX: number;
