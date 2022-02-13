@@ -66,7 +66,7 @@ export class HomePage implements OnInit, AfterViewInit {
   /**
    * Property that defines the trip duration.
    */
-  tripDuration = 0;
+  travelDuration = 0;
 
   /**
    * Property that defines an object that contanis all the device
@@ -79,6 +79,11 @@ export class HomePage implements OnInit, AfterViewInit {
    * acceleration data.
    */
   acceleration: Acceleration;
+
+  /**
+   * Property that defines the maximum travel duration.
+   */
+  readonly maxTravelDuration: number;
 
   /**
    * Property that defines the current amount of data present in
@@ -101,7 +106,7 @@ export class HomePage implements OnInit, AfterViewInit {
    * Property that defines an object that represents the second
    * interval, used to track the trip duration.
    */
-  private tripDurationInterval: ReturnType<typeof setInterval>;
+  private travelDurationInterval: ReturnType<typeof setInterval>;
 
   /**
    * Property that defines an object that contains all the
@@ -160,12 +165,18 @@ export class HomePage implements OnInit, AfterViewInit {
     private readonly alertService: AlertService,
     private readonly browserService: BrowserService,
     private readonly pointService: PointService,
-  ) {}
+  ) {
+    this.maxTravelDuration = environment.constants.maxTripDurationInMinutes;
+  }
 
   async ngOnInit() {
     setInterval(() => {
       this.createPoint();
       this.updateChart();
+
+      if (this.travelDuration / 60 >= this.maxTravelDuration) {
+        this.toggleTracking();
+      }
 
       if (!this.tracking) {
         return;
@@ -193,13 +204,28 @@ export class HomePage implements OnInit, AfterViewInit {
     this.tracking = !this.tracking;
 
     if (this.tracking) {
-      this.tripDurationInterval = setInterval(() => this.tripDuration++, 1000);
+      this.travelDurationInterval = setInterval(
+        () => this.travelDuration++,
+        1000,
+      );
       await this.keepAwakeService.keepAwake();
     } else {
-      this.tripDuration = 0;
-      clearInterval(this.tripDurationInterval);
+      this.travelDuration = 0;
+      clearInterval(this.travelDurationInterval);
       await this.keepAwakeService.allowSleep();
     }
+  }
+
+  /**
+   * Method that gets the difference in minutes between two dates.
+   *
+   * @param startDate defines the first date.
+   * @param endDate defines the second date.
+   * @returns the difference between the two dates in minutes.
+   */
+  getMinutesBetweenDates(startDate: Date, endDate: Date) {
+    const diff = endDate.getTime() - startDate.getTime();
+    return diff / 60000;
   }
 
   /**

@@ -40,6 +40,7 @@
     "@ionic-native/core": "^5.36.0",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.4",
+    "@ionic/storage-angular": "^3.0.6",
     "@nestjsx/crud-request": "^5.0.0-alpha.3",
     "@sentry/angular": "^6.16.1",
     "@sentry/tracing": "^6.16.1",

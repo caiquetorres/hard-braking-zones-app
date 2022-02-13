@@ -28,6 +28,7 @@
       gap: 1rem;
 
       flex: 1;
+      width: 100%;
 
       opacity: 0.25;
 
@@ -37,7 +38,13 @@
     }
 
     & > .chart {
+      width: 100%;
+
       pointer-events: none;
+
+      & > canvas {
+        width: 100%;
+      }
     }
 
     & > .obs {
