@@ -242,15 +242,15 @@ export class HomePage implements OnInit, AfterViewInit {
    */
   private async savePoint() {
     const point: IPoint = {
-      latitude: this.position.coords.latitude,
-      longitude: this.position.coords.longitude,
-      speed: this.position.coords.speed,
-      accuracy: this.position.coords.speed,
-      acclX: this.acceleration.x,
-      acclY: this.acceleration.y,
-      acclZ: this.acceleration.z,
+      latitude: `${this.position.coords.latitude}`,
+      longitude: `${this.position.coords.longitude}`,
+      speed: +this.position.coords.speed.toFixed(4),
+      accuracy: +this.position.coords.speed.toFixed(4),
+      acclX: +this.acceleration.x.toFixed(4),
+      acclY: +this.acceleration.y.toFixed(4),
+      acclZ: +this.acceleration.z.toFixed(4),
       deviceId: this.deviceId,
-      timestamp: this.position.timestamp,
+      timestamp: new Date().getTime(),
     };
 
     await this.pointService.save(point);
