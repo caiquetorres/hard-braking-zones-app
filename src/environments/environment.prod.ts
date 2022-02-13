@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   baseUrl: '',
   mocked: false,
-  version: '1.0.0',
+  version: '1.0.1',
   keys: {
     settings: 'UC-SETTINGS',
   },
