@@ -23,7 +23,7 @@
     <div class="data">
       <section>
         <ion-title>Tempo de viagem</ion-title>
-        <ion-text>{{ tripDuration | countUp }}</ion-text>
+        <ion-text>{{ travelDuration | countUp }}</ion-text>
       </section>
 
       <section *ngIf="position">
@@ -48,8 +48,8 @@
     </div>
 
     <ion-text class="obs">
-      Caso o tempo de viagem exceda 30 minutos iremos finaliza-la
-      automaticamente.
+      Caso o tempo de viagem exceda {{ maxTravelDuration }} minutos iremos
+      finaliza-la automaticamente.
     </ion-text>
   </div>
 </ion-content>
