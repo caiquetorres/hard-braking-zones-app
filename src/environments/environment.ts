@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   baseUrl: '',
-  baseWsUrl: '',
   mocked: false,
   version: '1.0.0',
   keys: {
@@ -15,7 +14,7 @@ export const environment = {
     info: '/info',
     feedback: '/feedback',
     version: '/version',
-    upload: '/locations/upload',
+    upload: '/points/upload',
   },
   sentry: {
     environment: 'development',
